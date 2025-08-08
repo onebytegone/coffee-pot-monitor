@@ -1,0 +1,15 @@
+{
+   "name": "coffee-pot-monitor",
+   "version": "0.0.1",
+   "description": "IoT coffee pot monitoring system monorepo",
+   "author": "Ethan Smith",
+   "license": "GPL-3.0",
+   "private": true,
+   "scripts": {
+      "format": "prettier --write \"**/*.{js,ts,vue,json,md,css,scss,html}\"",
+      "format:check": "prettier --check \"**/*.{js,ts,vue,json,md,css,scss,html}\""
+   },
+   "devDependencies": {
+      "prettier": "3.6.2"
+   }
+}
