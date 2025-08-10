@@ -6,6 +6,8 @@
 .env.local
 node_modules
 dist
+.vscode
+!.vscode/extensions.json
 
 # PlatformIO
 .pio
