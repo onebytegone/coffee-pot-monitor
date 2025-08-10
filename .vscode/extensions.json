@@ -1,0 +1,13 @@
+{
+   "recommendations": [
+      "esbenp.prettier-vscode",
+      "hashicorp.terraform",
+      "dbaeumer.vscode-eslint",
+      "DavidAnson.vscode-markdownlint",
+      "platformio.platformio-ide",
+      "Vue.volar"
+   ],
+   "unwantedRecommendations": [
+      "ms-vscode.cpptools-extension-pack"
+   ]
+}

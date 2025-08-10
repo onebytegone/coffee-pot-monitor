@@ -1,0 +1,28 @@
+# General
+.DS_Store
+*.log
+*.tmp
+.env
+.env.local
+node_modules
+dist
+
+# PlatformIO
+.pio
+
+# Cloudflare Workers
+.wrangler
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.backup
+.terraform.lock.hcl
+
+# IDE
+.idea/
+*.swp
+*.swo
+
+# OS
+Thumbs.db
