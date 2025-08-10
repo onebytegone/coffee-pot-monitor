@@ -1,0 +1,17 @@
+{
+   "name": "@coffee-pot-monitor/schemas",
+   "version": "0.0.1",
+   "description": "Shared schemas for Coffee Pot Monitor API interfaces",
+   "author": "Ethan Smith",
+   "license": "GPL-3.0",
+   "private": true,
+   "type": "module",
+   "main": "src/index.ts",
+   "files": [
+      "dist"
+   ],
+   "scripts": {
+      "dev": "tsc --watch",
+      "tsc": "tsc --noEmit"
+   }
+}

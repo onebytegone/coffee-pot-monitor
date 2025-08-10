@@ -5,11 +5,20 @@
    "author": "Ethan Smith",
    "license": "GPL-3.0",
    "private": true,
+   "workspaces": [
+      "packages/*"
+   ],
    "scripts": {
       "format": "prettier --write \"**/*.{js,ts,vue,json,md,css,scss,html}\"",
-      "format:check": "prettier --check \"**/*.{js,ts,vue,json,md,css,scss,html}\""
+      "format:check": "prettier --check \"**/*.{js,ts,vue,json,md,css,scss,html}\"",
+      "install:all": "npm install && npm install --workspace=packages/schemas",
+      "tsc": "npm run tsc --workspace=packages/schemas"
    },
    "devDependencies": {
-      "prettier": "3.6.2"
+      "prettier": "3.6.2",
+      "typescript": "5.9.2"
+   },
+   "dependencies": {
+      "zod": "4.0.15"
    }
 }
