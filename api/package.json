@@ -1,0 +1,23 @@
+{
+   "name": "@coffee-pot-monitor/api",
+   "version": "0.0.1",
+   "description": "API implementation for Coffee Pot Monitor",
+   "author": "Ethan Smith",
+   "license": "GPL-3.0",
+   "private": true,
+   "type": "module",
+   "main": "src/index.ts",
+   "files": [
+      "dist"
+   ],
+   "scripts": {
+      "dev": "tsc --watch",
+      "tsc": "tsc --noEmit",
+      "build": "esbuild src/index.ts --format=esm --bundle --outfile=dist/index.js"
+   },
+   "devDependencies": {
+      "@cloudflare/workers-types": "4.20250810.0",
+      "@types/node": "24.2.1",
+      "wrangler": "4.28.1"
+   }
+}
