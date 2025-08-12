@@ -1,5 +1,5 @@
 import { Router, IRequest, json, error } from 'itty-router';
-import { DeviceReportResponsePayload, ZDeviceReportRequestPayload } from '../../packages/schemas/src/index';
+import { CoffeePotStatusResponsePayload, DeviceReportResponsePayload, ZDeviceReportRequestPayload } from '../../packages/schemas/src/index';
 import { CloudFlareArgs } from './worker-types';
 import { validateToken } from './middleware/validate-token';
 
@@ -20,6 +20,21 @@ router.get('/health', (): Response => {
    };
 
    return json(body, { headers: CORS_HEADERS });
+});
+
+router.get('/device/status', validateToken, async (request): Promise<Response> => {
+   if (!Array.isArray(request.token.authorization_details) || !request.token.authorization_details.length) {
+      return error(400, 'Invalid JWT');
+   }
+
+   // TODO: real implementation
+   return json({
+      isCarafePresent: true,
+      isCoffeeBrewing: false,
+      approxOuncesOfCoffeeAvailable: 42,
+      lastBrewTimestamp: Math.floor(Date.now() / 1000) - (60 * 60), // 1 hour ago
+      lastReportTimestamp: Math.floor(Date.now() / 1000) - (60 * 5), // 5 minutes ago
+   } satisfies CoffeePotStatusResponsePayload);
 });
 
 router.post('/device/report', validateToken, async (request): Promise<Response> => {
