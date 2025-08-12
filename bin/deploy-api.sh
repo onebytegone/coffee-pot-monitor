@@ -17,6 +17,7 @@ if [ -z "${CLOUDFLARE_API_TOKEN}" ]; then
 fi
 
 npm run build --workspace api
+"${SCRIPT_DIR}/generate-keypair.sh"
 
 if [ ! -f "infrastructure/terraform.tfstate" ]; then
    pushd infrastructure > /dev/null

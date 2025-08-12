@@ -8,6 +8,7 @@ node_modules
 dist
 .vscode
 !.vscode/extensions.json
+data/*.pem
 
 # PlatformIO
 .pio

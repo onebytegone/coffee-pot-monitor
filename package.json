@@ -21,6 +21,7 @@
       "typescript": "5.9.2"
    },
    "dependencies": {
+      "jose": "6.0.12",
       "zod": "4.0.15"
    }
 }
