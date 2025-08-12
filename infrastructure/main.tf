@@ -17,6 +17,21 @@ resource "cloudflare_workers_script" "api" {
    compatibility_flags = [ "nodejs_compat" ]
    compatibility_date = "2025-08-10"
    main_module = "index.js"
+   bindings = [
+      {
+         name = "PUBLIC_KEY"
+         # TODO: how to make this configurable?
+         text = file("${path.module}/../data/public_key.pem")
+         type = "secret_text"
+      }
+   ]
+   observability = {
+      enabled = true
+      logs = {
+         enabled = true
+         invocation_logs = true
+      }
+   }
 }
 
 resource "cloudflare_workers_script_subdomain" "example_workers_script_subdomain" {

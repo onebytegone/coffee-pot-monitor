@@ -28,6 +28,8 @@ export const ZDeviceReportResponsePayload = z.object({
    success: z.boolean(),
 });
 
+export type DeviceReportResponsePayload = z.infer<typeof ZDeviceReportResponsePayload>;
+
 // Web UI request/response schemas
 
 export const ZCoffeePotStatusResponsePayload = z.object({

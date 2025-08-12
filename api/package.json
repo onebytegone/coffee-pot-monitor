@@ -16,7 +16,7 @@
       "build": "esbuild src/index.ts --format=esm --bundle --outfile=dist/index.js"
    },
    "dependencies": {
-      "itty-router": "4.2.2"
+      "itty-router": "5.0.22"
    },
    "devDependencies": {
       "@cloudflare/workers-types": "4.20250810.0",
