@@ -28,7 +28,7 @@
 
 {#if $ouncesAvailable && $lastBrewed}
    <h2>Last Brewed</h2>
-   <p>{lastBrewedLabel}</p>
+   <p>{lastBrewedLabel} ago</p>
 {/if}
 
 <style>
