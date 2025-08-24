@@ -13,7 +13,7 @@
    "scripts": {
       "dev": "tsc --watch",
       "check": "tsc --noEmit",
-      "build": "esbuild src/index.ts --format=esm --bundle --outfile=dist/index.js"
+      "build": "esbuild src/index.ts --format=esm --bundle --external:cloudflare:workers --outfile=dist/index.js"
    },
    "dependencies": {
       "itty-router": "5.0.22"

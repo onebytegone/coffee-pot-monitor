@@ -5,21 +5,23 @@ import { z } from 'zod';
 export const ZDeviceReportWeightSensorData = z.object({
    type: z.literal('weight'),
    id: z.string().min(1),
-   value: z.number(),
+   value: z.string(),
 });
 
 export type DeviceReportWeightSensorDataSchema = z.infer<typeof ZDeviceReportWeightSensorData>;
 
 export const ZDeviceReportRequestPayload = z.object({
-   reports: z.array(z.object({
-      sensors: z.array(ZDeviceReportWeightSensorData),
+   reports: z.array(
+      z.object({
+         sensors: z.array(ZDeviceReportWeightSensorData),
 
-      /**
-       * The seconds since the epoch (Unix timestamp).  If not provided, the server will use
-       * the current timestamp.
-       */
-      timestamp: z.number().int().positive().optional(),
-   })),
+         /**
+          * The seconds since the epoch (Unix timestamp).  If not provided, the server will use
+          * the current timestamp.
+          */
+         timestamp: z.number().int().positive().optional(),
+      })
+   ),
 });
 
 export type DeviceReportRequestPayload = z.infer<typeof ZDeviceReportRequestPayload>;
