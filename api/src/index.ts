@@ -52,9 +52,10 @@ router.get('/device/status', validateToken, async (request, env): Promise<Respon
    const body: CoffeePotStatusResponsePayload = {
       isCarafePresent: weight > EMPTY_CARAFE_WEIGHT_GRAMS * 0.95, // 95% of carafe weight
       isCoffeeBrewing: false, // TODO: implement
-      approxOuncesOfCoffeeAvailable: Math.max(0, Math.round(
-         (weight - EMPTY_CARAFE_WEIGHT_GRAMS) / WATER_WEIGHT_GRAMS_PER_OZ
-      )),
+      approxOuncesOfCoffeeAvailable: Math.max(
+         0,
+         Math.round((weight - EMPTY_CARAFE_WEIGHT_GRAMS) / WATER_WEIGHT_GRAMS_PER_OZ)
+      ),
       // TODO: lastBrewTimestamp
       lastReportTimestamp: latestReport.timestamp,
    };
