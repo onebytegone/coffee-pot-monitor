@@ -11,7 +11,7 @@ import { validateToken } from './middleware/validate-token';
 const CORS_HEADERS = Object.freeze({
    'Access-Control-Allow-Origin': '*',
    'Access-Control-Allow-Methods': 'GET, OPTIONS',
-   'Access-Control-Allow-Headers': 'Content-Type',
+   'Access-Control-Allow-Headers': 'Authorization, Content-Type',
 });
 
 const WATER_WEIGHT_GRAMS_PER_OZ = 28.35,
@@ -49,16 +49,21 @@ router.get('/device/status', validateToken, async (request, env): Promise<Respon
 
    const weight = Number(latestReport.value);
 
-   // TODO: real implementation
-   return json({
+   const body: CoffeePotStatusResponsePayload = {
       isCarafePresent: weight > EMPTY_CARAFE_WEIGHT_GRAMS * 0.95, // 95% of carafe weight
-      isCoffeeBrewing: false,
-      approxOuncesOfCoffeeAvailable: Math.round(
+      isCoffeeBrewing: false, // TODO: implement
+      approxOuncesOfCoffeeAvailable: Math.max(0, Math.round(
          (weight - EMPTY_CARAFE_WEIGHT_GRAMS) / WATER_WEIGHT_GRAMS_PER_OZ
-      ),
+      )),
       // TODO: lastBrewTimestamp
       lastReportTimestamp: latestReport.timestamp,
-   } satisfies CoffeePotStatusResponsePayload);
+   };
+
+   return json(body, {
+      headers: {
+         'Access-Control-Allow-Origin': '*',
+      },
+   });
 });
 
 router.post('/device/report', validateToken, async (request, env): Promise<Response> => {
