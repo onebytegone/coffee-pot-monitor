@@ -12,6 +12,6 @@
    ],
    "scripts": {
       "dev": "tsc --watch",
-      "tsc": "tsc --noEmit"
+      "check": "tsc --noEmit"
    }
 }

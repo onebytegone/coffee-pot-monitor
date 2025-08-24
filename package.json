@@ -6,14 +6,13 @@
    "license": "GPL-3.0",
    "private": true,
    "workspaces": [
+      "api",
       "packages/*",
-      "api"
    ],
    "scripts": {
+      "check": "npm run check --workspace=packages/schemas && npm run check --workspace=api",
       "format": "prettier --write \"**/*.{js,ts,vue,json,md,css,scss,html}\"",
-      "format:check": "prettier --check \"**/*.{js,ts,vue,json,md,css,scss,html}\"",
-      "install:all": "npm install && npm install --workspace=packages/schemas && npm install --workspace=api",
-      "tsc": "npm run tsc --workspace=packages/schemas && npm run tsc --workspace=api"
+      "format:check": "prettier --check \"**/*.{js,ts,vue,json,md,css,scss,html}\""
    },
    "devDependencies": {
       "esbuild": "0.25.8",

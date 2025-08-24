@@ -12,7 +12,7 @@
    ],
    "scripts": {
       "dev": "tsc --watch",
-      "tsc": "tsc --noEmit",
+      "check": "tsc --noEmit",
       "build": "esbuild src/index.ts --format=esm --bundle --outfile=dist/index.js"
    },
    "dependencies": {
