@@ -48,12 +48,12 @@ export function makeStatusAPI(): StatusAPI {
 
       lastBrewed.set(
          payloadResult.data.lastBrewTimestamp
-            ? new Date(payloadResult.data.lastBrewTimestamp)
+            ? new Date(payloadResult.data.lastBrewTimestamp * 1000)
             : undefined
       );
       lastReport.set(
          payloadResult.data.lastReportTimestamp
-            ? new Date(payloadResult.data.lastReportTimestamp)
+            ? new Date(payloadResult.data.lastReportTimestamp * 1000)
             : undefined
       );
       ouncesAvailable.set(payloadResult.data.approxOuncesOfCoffeeAvailable);
