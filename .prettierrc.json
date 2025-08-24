@@ -8,6 +8,7 @@
    "bracketSpacing": true,
    "arrowParens": "avoid",
    "endOfLine": "lf",
+   "plugins": ["prettier-plugin-svelte"],
    "overrides": [
       {
          "files": "*.md",
@@ -20,6 +21,12 @@
          "files": "*.json",
          "options": {
             "tabWidth": 3
+         }
+      },
+      {
+         "files": "*.svelte",
+         "options": {
+            "parser": "svelte"
          }
       }
    ]

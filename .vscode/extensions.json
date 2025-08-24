@@ -5,7 +5,8 @@
       "dbaeumer.vscode-eslint",
       "DavidAnson.vscode-markdownlint",
       "platformio.platformio-ide",
-      "Vue.volar"
+      "Vue.volar",
+      "svelte.svelte-vscode"
    ],
    "unwantedRecommendations": [
       "ms-vscode.cpptools-extension-pack"

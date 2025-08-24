@@ -1,0 +1,32 @@
+:root {
+   --color-background: #f1f0e4;
+   --color-text: #3f3f3f;
+   --color-text-subdued: color-mix(in srgb, var(--color-text), transparent 50%);
+}
+
+@font-face {
+   font-family: 'Roboto Slab';
+   src: url('./assets/fonts/RobotoSlab-VariableFont_wght.ttf') format('truetype');
+}
+
+html,
+body,
+#app {
+   margin: 0;
+   padding: 0;
+   height: 100%;
+}
+
+body {
+   background-color: var(--color-background);
+   color: var(--color-text);
+   font-family: 'Roboto Slab', serif;
+}
+
+a {
+   text-decoration: inherit;
+}
+
+a:hover {
+   text-decoration: underline;
+}
