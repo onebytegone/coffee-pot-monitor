@@ -13,7 +13,8 @@
    "scripts": {
       "check": "npm run check --workspace=packages/schemas && npm run check --workspace=api && npm run check --workspace=web",
       "format": "prettier --write \"**/*.{js,ts,vue,json,md,css,scss,html}\"",
-      "format:check": "prettier --check \"**/*.{js,ts,vue,json,md,css,scss,html}\""
+      "format:check": "prettier --check \"**/*.{js,ts,vue,json,md,css,scss,html}\"",
+      "standards": "npm run format:check && npm run check"
    },
    "devDependencies": {
       "esbuild": "0.25.8",

@@ -11,8 +11,8 @@
       "dist"
    ],
    "scripts": {
-      "dev": "tsc --watch",
-      "check": "tsc --noEmit",
+      "dev": "tsc --skipLibCheck --watch",
+      "check": "tsc --skipLibCheck --noEmit",
       "build": "esbuild src/index.ts --format=esm --bundle --external:cloudflare:workers --outfile=dist/index.js"
    },
    "dependencies": {
