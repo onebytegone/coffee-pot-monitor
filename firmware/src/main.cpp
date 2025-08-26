@@ -123,9 +123,7 @@ void loop() {
                if (statusCode == 200) {
                   Serial.println("[HTTPS] POST successful");
                } else {
-                  Serial.println("https://" + String(apiDomain) + "/device/report");
-                  Serial.println(deviceToken);
-                  Serial.printf("[HTTPS] POST failed: %i %s\n", statusCode, httpsClient.getString());
+                  Serial.printf("[HTTPS] POST failed: %s %i %s\n", apiDomain, statusCode, httpsClient.getString());
                }
                httpsClient.end();
                lastReport = millis();
