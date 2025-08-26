@@ -37,7 +37,7 @@ export type DeviceReportResponsePayload = z.infer<typeof ZDeviceReportResponsePa
 export const ZCoffeePotStatusResponsePayload = z.object({
    isCarafePresent: z.boolean(),
    isCoffeeBrewing: z.boolean(),
-   approxOuncesOfCoffeeAvailable: z.number().int().positive().optional(),
+   approxOuncesOfCoffeeAvailable: z.number().int().nonnegative().optional(),
    lastBrewTimestamp: z.number().int().positive().optional(),
    lastReportTimestamp: z.number().int().positive().optional(),
 });
