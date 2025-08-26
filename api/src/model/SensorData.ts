@@ -15,6 +15,11 @@ export class SensorData extends DurableObject {
             value TEXT,
             PRIMARY KEY (sensorID, datetime)
          ) WITHOUT ROWID;
+         CREATE TABLE IF NOT EXISTS ComputedStats (
+            stat TEXT NOT NULL,
+            value TEXT,
+            PRIMARY KEY (stat)
+         ) WITHOUT ROWID;
       `);
    }
 
@@ -31,6 +36,28 @@ export class SensorData extends DurableObject {
          );
          return;
       }
+
+      await this._sql.exec(
+         `
+         INSERT INTO SensorData (sensorID, value)
+         VALUES (?, ?);
+      `,
+         sensorID,
+         value
+      );
+
+      await this._sql.exec(
+         `
+         SELECT datetime, value FROM SensorData
+         VALUES (?, ?)
+          ORDER BY datetime DESC
+          WHERE sensorID = ?
+          LIMIT 10;
+      `,
+         sensorID
+      );
+
+      const isBrewing = false;
 
       await this._sql.exec(
          `
