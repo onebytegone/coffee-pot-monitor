@@ -7,7 +7,7 @@
 
    const { lastReport } = getStatusAPI();
 
-   const showReport = $derived(Date.now() - ($lastReport?.getTime() || 0) > 5 * 60 * 1000);
+   const showReport = $derived($lastReport && Date.now() - ($lastReport?.getTime() || 0) > 5 * 60 * 1000);
 
    const lastReportLabel = $derived(
       humanizeDuration(currentTime.getTime() - ($lastReport?.getTime() || 0), {
