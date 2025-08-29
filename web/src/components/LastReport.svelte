@@ -7,7 +7,9 @@
 
    const { lastReport } = getStatusAPI();
 
-   const showReport = $derived($lastReport && Date.now() - ($lastReport?.getTime() || 0) > 5 * 60 * 1000);
+   const showReport = $derived(
+      $lastReport && Date.now() - ($lastReport?.getTime() || 0) > 5 * 60 * 1000
+   );
 
    const lastReportLabel = $derived(
       humanizeDuration(currentTime.getTime() - ($lastReport?.getTime() || 0), {
@@ -30,7 +32,7 @@
 
 {#if showReport}
    <h2>Last Report</h2>
-   <p>{ lastReportLabel } ago</p>
+   <p>{lastReportLabel} ago</p>
 {/if}
 
 <style>

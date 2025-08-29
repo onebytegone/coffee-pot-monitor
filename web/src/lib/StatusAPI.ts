@@ -1,6 +1,7 @@
 import { decodeJwt, jwtDecrypt } from 'jose';
 import { writable, type Readable } from 'svelte/store';
 import { ZCoffeePotStatusResponsePayload } from '@coffee-pot-monitor/schemas';
+import { MOCK_STATE_UPDATE_EVENT } from './constants';
 
 export interface StatusAPI {
    unauthenticated: Readable<boolean>;
@@ -68,5 +69,98 @@ export function makeStatusAPI(): StatusAPI {
       lastReport,
       ouncesAvailable,
       refresh,
+   };
+}
+
+export function makeMockStatusAPI(): StatusAPI {
+   const unauthenticated = writable<boolean>(false),
+      lastBrewed = writable<Date | undefined>(undefined),
+      lastReport = writable<Date | undefined>(new Date()),
+      ouncesAvailable = writable<number | undefined>(14);
+
+   // Mock states matching production API response format
+   const mockStates = {
+      empty: {
+         isCarafePresent: false,
+         isCoffeeBrewing: false,
+         approxOuncesOfCoffeeAvailable: undefined,
+         lastBrewTimestamp: undefined,
+         lastReportTimestamp: undefined,
+      },
+      'no-carafe': {
+         isCarafePresent: false,
+         isCoffeeBrewing: false,
+         approxOuncesOfCoffeeAvailable: undefined,
+         lastBrewTimestamp: undefined,
+         lastReportTimestamp: Math.floor(Date.now() / 1000),
+      },
+      'carafe-empty': {
+         isCarafePresent: true,
+         isCoffeeBrewing: false,
+         approxOuncesOfCoffeeAvailable: 0,
+         lastBrewTimestamp: undefined,
+         lastReportTimestamp: Math.floor(Date.now() / 1000),
+      },
+      'carafe-half': {
+         isCarafePresent: true,
+         isCoffeeBrewing: false,
+         approxOuncesOfCoffeeAvailable: 7,
+         lastBrewTimestamp: Math.floor((Date.now() - 30 * 60 * 1000) / 1000),
+         lastReportTimestamp: Math.floor(Date.now() / 1000),
+      },
+      'carafe-full': {
+         isCarafePresent: true,
+         isCoffeeBrewing: false,
+         approxOuncesOfCoffeeAvailable: 14,
+         lastBrewTimestamp: Math.floor((Date.now() - 15 * 60 * 1000) / 1000),
+         lastReportTimestamp: Math.floor(Date.now() / 1000),
+      },
+      'stale-data': {
+         isCarafePresent: true,
+         isCoffeeBrewing: false,
+         approxOuncesOfCoffeeAvailable: 10,
+         lastBrewTimestamp: Math.floor((Date.now() - 90 * 60 * 1000) / 1000),
+         lastReportTimestamp: Math.floor((Date.now() - 60 * 60 * 1000) / 1000),
+      },
+      brewing: {
+         isCarafePresent: true,
+         isCoffeeBrewing: true,
+         approxOuncesOfCoffeeAvailable: 3,
+         lastBrewTimestamp: Math.floor((Date.now() - 5 * 60 * 1000) / 1000),
+         lastReportTimestamp: Math.floor(Date.now() / 1000),
+      },
+   };
+
+   // Listen for mock state update events
+   const handleStateUpdate = (event: CustomEvent<string>) => {
+      const state = mockStates[event.detail as keyof typeof mockStates];
+      if (!state) return;
+
+      // Process mock data same way as production API response
+      ouncesAvailable.set(state.approxOuncesOfCoffeeAvailable);
+      lastReport.set(
+         state.lastReportTimestamp ? new Date(state.lastReportTimestamp * 1000) : undefined
+      );
+      lastBrewed.set(
+         state.lastBrewTimestamp ? new Date(state.lastBrewTimestamp * 1000) : undefined
+      );
+   };
+
+   // Add event listener for state updates
+   window.addEventListener(MOCK_STATE_UPDATE_EVENT, handleStateUpdate as EventListener);
+
+   // Clean up function to remove event listener
+   const cleanup = () => {
+      window.removeEventListener(MOCK_STATE_UPDATE_EVENT, handleStateUpdate as EventListener);
+   };
+
+   // Store cleanup function for potential future use
+   (window as any).__mockStatusAPICleanup = cleanup;
+
+   return {
+      unauthenticated,
+      lastBrewed,
+      lastReport,
+      ouncesAvailable,
    };
 }

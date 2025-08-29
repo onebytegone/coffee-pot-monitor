@@ -1,11 +1,12 @@
 <script lang="ts">
-   import { makeStatusAPI } from './lib/StatusAPI';
+   import { makeStatusAPI, makeMockStatusAPI } from './lib/StatusAPI';
    import { setStatusAPI } from './lib/context';
    import LastReport from './components/LastReport.svelte';
    import LastBrewed from './components/LastBrewed.svelte';
    import CoffeeAvailable from './components/CoffeeAvailable.svelte';
+   import DevControls from './components/DevControls.svelte';
 
-   const statusAPI = makeStatusAPI(),
+   const statusAPI = import.meta.env.DEV ? makeMockStatusAPI() : makeStatusAPI(),
       unauthenticated = statusAPI.unauthenticated;
 
    setStatusAPI(statusAPI);
@@ -40,6 +41,10 @@
          <CoffeeAvailable />
          <LastBrewed />
          <LastReport />
+      {/if}
+
+      {#if import.meta.env.DEV}
+         <DevControls />
       {/if}
    </div>
 </main>

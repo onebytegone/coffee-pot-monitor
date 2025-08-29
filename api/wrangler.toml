@@ -1,0 +1,14 @@
+name = "coffee-pot-monitor-api"
+main = "src/index.ts"
+compatibility_date = "2024-08-28"
+
+[env.development]
+vars = { }
+
+[[env.development.durable_objects.bindings]]
+name = "SENSOR_DATA_DO"
+class_name = "SensorData"
+
+[[durable_objects.bindings]]
+name = "SENSOR_DATA_DO"
+class_name = "SensorData"
