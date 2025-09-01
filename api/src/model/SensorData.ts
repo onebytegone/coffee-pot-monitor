@@ -15,6 +15,7 @@ export class SensorData extends DurableObject {
             value TEXT,
             PRIMARY KEY (sensorID, datetime)
          ) WITHOUT ROWID;
+         CREATE INDEX IF NOT EXISTS idxSensorDataDatetime ON SensorData (datetime);
       `);
    }
 
