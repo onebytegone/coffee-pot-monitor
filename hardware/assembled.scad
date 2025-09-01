@@ -1,6 +1,7 @@
 use <./carafe-plate.scad>;
 use <./carafe-plate-support.scad>;
 use <./coffee-machine.scad>;
+use <./coffee-machine-base.scad>;
 use <./load-cell-base.scad>;
 include <./_shared-vars.scad>;
 
@@ -20,5 +21,11 @@ cube([ loadCellWidth, loadCellLength, loadCellThickness ]);
 translate([ loadCellCarafeOffset * 2 -loadCellLength, 0,  -loadCellThickness - 2 ])
 loadCellBase();
 
+translate([-5,0,0 ]){
+
 translate([ -carafeWidth / 2 - footWidth/ 2, - footDistanceY / 2, 0 ])
 coffeeMachine();
+
+translate([ -carafeWidth / 2 - footWidth/ 2, - footDistanceY / 2, -coffeeMachineLiftHeight ])
+coffeeMachineBase();
+}
