@@ -74,7 +74,7 @@ export class SensorData extends DurableObject {
 
       return {
          sensorID: this._lastReport.sensorID,
-         timestamp: new Date(this._lastReport.timestamp).getTime() / 1000,
+         timestamp: Math.floor(new Date(this._lastReport.timestamp).getTime() / 1000),
          value: this._lastReport.value,
       };
    }
