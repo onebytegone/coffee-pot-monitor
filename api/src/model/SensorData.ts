@@ -1,8 +1,14 @@
 import { DurableObject } from 'cloudflare:workers';
-import { time } from 'zod/v4/core/regexes.cjs';
+
+interface SensorReport {
+   sensorID: string;
+   timestamp: string;
+   value: string;
+}
 
 export class SensorData extends DurableObject {
    private _sql: SqlStorage;
+   private _lastReport?: SensorReport;
 
    constructor(ctx: DurableObjectState, env: unknown) {
       super(ctx, env);
@@ -15,6 +21,7 @@ export class SensorData extends DurableObject {
             value TEXT,
             PRIMARY KEY (sensorID, datetime)
          ) WITHOUT ROWID;
+         CREATE INDEX IF NOT EXISTS idxSensorDataDatetime ON SensorData (datetime);
       `);
    }
 
@@ -32,6 +39,12 @@ export class SensorData extends DurableObject {
          return;
       }
 
+      this._lastReport = {
+         sensorID,
+         timestamp: new Date().toISOString(),
+         value,
+      };
+
       await this._sql.exec(
          `
          INSERT INTO SensorData (sensorID, value)
@@ -43,18 +56,26 @@ export class SensorData extends DurableObject {
    }
 
    async getLatestReport(): Promise<{ sensorID: string; timestamp: number; value: string } | null> {
-      const result = await this._sql.exec(`
-         SELECT sensorID, datetime, value FROM SensorData
-          ORDER BY datetime DESC
-          LIMIT 1;
-      `);
+      if (!this._lastReport) {
+         const result = await this._sql.exec(`
+            SELECT sensorID, datetime, value FROM SensorData
+            ORDER BY datetime DESC
+            LIMIT 1;
+         `);
 
-      const row = result.one();
+         const row = result.one();
+
+         this._lastReport = {
+            sensorID: String(row.sensorID.valueOf()),
+            timestamp: row.datetime.valueOf() as string,
+            value: String(row.value),
+         };
+      }
 
       return {
-         sensorID: String(row.sensorID.valueOf()),
-         timestamp: new Date(row.datetime.valueOf() as string).getTime() / 1000,
-         value: String(row.value),
+         sensorID: this._lastReport.sensorID,
+         timestamp: Math.floor(new Date(this._lastReport.timestamp).getTime() / 1000),
+         value: this._lastReport.value,
       };
    }
 }

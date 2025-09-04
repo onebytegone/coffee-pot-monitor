@@ -42,6 +42,7 @@ bool shouldSaveConfig = false;
 unsigned long lastSensorRead = 0;
 unsigned long lastReport = 0;
 unsigned long wifiResetPressStart = 0;
+unsigned short consecutiveNegativeReadingCount = 0;
 
 void saveConfigCallback() {
    shouldSaveConfig = true;
@@ -109,6 +110,16 @@ void loop() {
          Serial.print("Load cell reading: ");
          Serial.println(reading);
 
+         if (reading < 0) {
+            consecutiveNegativeReadingCount++;
+            if (consecutiveNegativeReadingCount >= 3) {
+               loadCell.tare();
+               Serial.println("Load cell tared due to consecutive negative readings.");
+            }
+         } else {
+            consecutiveNegativeReadingCount = 0;
+         }
+
          lastSensorRead = millis();
 
          if (millis() - lastReport > REPORT_INTERVAL_MS) {
@@ -123,9 +134,7 @@ void loop() {
                if (statusCode == 200) {
                   Serial.println("[HTTPS] POST successful");
                } else {
-                  Serial.println("https://" + String(apiDomain) + "/device/report");
-                  Serial.println(deviceToken);
-                  Serial.printf("[HTTPS] POST failed: %i %s\n", statusCode, httpsClient.getString());
+                  Serial.printf("[HTTPS] POST failed: %s %i %s\n", apiDomain, statusCode, httpsClient.getString());
                }
                httpsClient.end();
                lastReport = millis();
