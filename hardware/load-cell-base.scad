@@ -20,13 +20,6 @@ baseLength = backAttachPointSupportLength + attachPointWallThickness + attachPoi
 boltHeadHeight = 3.5;
 boltHeadDiameter = 9.5;
 
-assemblyNutThickness = 2.5;
-assemblyNutWidth = 6.3;
-assemblyNutHeight = 5.55;
-assemblyBoltDiameter = 3;
-assemblyBoltDistance = 45;
-assemblyBoltInset = 3;
-
 armAngle = 50;
 armAngledLength = 50;
 armStraightLength = 65;
@@ -119,13 +112,13 @@ module loadCellBase() {
                cylinder(r = loadCellBaseBoltDiameter / 2, h = attachPointBaseThickness + armThickness + 2);
 
             translate([ attachPointWallThickness + loadCellPlateBoltInset, attachPointWidth / 2, - armThickness - 0.01  ])
-               cylinder(loadCellBaseBoltDiameter / 2, boltHeadDiameter / 2, h = boltHeadHeight);
+               cylinder(loadCellBaseBoltDiameter / 2, boltHeadDiameter / 2, boltHeadHeight);
 
             translate([ attachPointWallThickness + loadCellPlateBoltInset + loadCellBoltDistance, attachPointWidth / 2, - armThickness -1  ])
                cylinder(r = loadCellBaseBoltDiameter / 2, h = attachPointBaseThickness + armThickness + 2);
 
             translate([ attachPointWallThickness + loadCellPlateBoltInset + loadCellBoltDistance, attachPointWidth / 2, - armThickness -0.01  ])
-               cylinder(loadCellBaseBoltDiameter / 2, boltHeadDiameter / 2, h = boltHeadHeight);
+               cylinder(loadCellBaseBoltDiameter / 2, boltHeadDiameter / 2, boltHeadHeight);
 
             translate([ -backAttachPointSupportLength + assemblyBoltInset, attachPointWidth / 2 - assemblyBoltDistance / 2 -assemblyNutWidth/2, -armThickness -1 ])
             cube([ assemblyNutHeight, assemblyNutWidth, assemblyNutThickness ]);
