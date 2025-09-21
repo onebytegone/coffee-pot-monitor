@@ -43,3 +43,15 @@ export const ZCoffeePotStatusResponsePayload = z.object({
 });
 
 export type CoffeePotStatusResponsePayload = z.infer<typeof ZCoffeePotStatusResponsePayload>;
+
+export const ZCoffeePotHistoryResponsePayload = z.object({
+   dataPoints: z.array(
+      z.object({
+         timestamp: z.number().int().positive(),
+         approxOuncesOfCoffeeAvailable: z.number().int().nonnegative().optional(),
+         rawDataValue: z.string(),
+      })
+   ),
+});
+
+export type CoffeePotHistoryResponsePayload = z.infer<typeof ZCoffeePotHistoryResponsePayload>;

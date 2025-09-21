@@ -1,9 +1,9 @@
 import { Router, IRequest, json, error } from 'itty-router';
 import {
+   CoffeePotHistoryResponsePayload,
    CoffeePotStatusResponsePayload,
    DeviceReportResponsePayload,
    ZDeviceReportRequestPayload,
-   ZDeviceReportWeightSensorData,
 } from '../../packages/schemas/src/index';
 import { CloudFlareArgs } from './worker-types';
 import { validateToken } from './middleware/validate-token';
@@ -58,6 +58,62 @@ router.get('/device/status', validateToken, async (request, env): Promise<Respon
       ),
       // TODO: lastBrewTimestamp
       lastReportTimestamp: latestReport.timestamp,
+   };
+
+   return json(body, {
+      headers: {
+         'Access-Control-Allow-Origin': '*',
+      },
+   });
+});
+
+router.get('/device/history', validateToken, async (request, env): Promise<Response> => {
+   if (
+      !Array.isArray(request.token.authorization_details) ||
+      !request.token.authorization_details.length
+   ) {
+      return error(400, 'Invalid JWT');
+   }
+
+   const deviceID = request.token.authorization_details[0].deviceID,
+      durableObjectID = env.SENSOR_DATA_DO.idFromName(deviceID),
+      sensorDataDO = env.SENSOR_DATA_DO.get(durableObjectID),
+      reports = await sensorDataDO.listHistoricalReports();
+
+   const aggregated = reports.reduce(
+      (memo, report) => {
+         const roundedTimestamp = Math.floor(report.timestamp / 300) * 300; // 5 minutes
+
+         if (!memo[roundedTimestamp]) {
+            memo[roundedTimestamp] = [];
+         }
+
+         memo[roundedTimestamp].push(report);
+         return memo;
+      },
+      {} as Record<string, (typeof reports)[number][]>
+   );
+
+   const body: CoffeePotHistoryResponsePayload = {
+      dataPoints: Object.entries(aggregated)
+         .map(([timestamp, groupedReports]) => {
+            const value =
+               groupedReports.reduce((sum, report) => {
+                  return sum + Number(report.value);
+               }, 0) / groupedReports.length;
+
+            return {
+               timestamp: Number(timestamp),
+               approxOuncesOfCoffeeAvailable: Math.max(
+                  0,
+                  Math.round((value - EMPTY_CARAFE_WEIGHT_GRAMS) / WATER_WEIGHT_GRAMS_PER_OZ)
+               ),
+               rawDataValue: String(value),
+            };
+         })
+         .sort((a, b) => {
+            return a.timestamp - b.timestamp;
+         }),
    };
 
    return json(body, {
