@@ -1,15 +1,18 @@
 <script lang="ts">
    import { makeStatusAPI, makeMockStatusAPI } from './lib/StatusAPI';
-   import { setStatusAPI } from './lib/context';
+   import { setHistoryAPI, setStatusAPI } from './lib/context';
    import LastReport from './components/LastReport.svelte';
    import LastBrewed from './components/LastBrewed.svelte';
    import CoffeeAvailable from './components/CoffeeAvailable.svelte';
    import DevControls from './components/DevControls.svelte';
+   import { makeHistoryAPI } from './lib/HistoryAPI';
+   import HistoricalChart from './components/HistoricalChart.svelte';
 
    const statusAPI = import.meta.env.DEV ? makeMockStatusAPI() : makeStatusAPI(),
       unauthenticated = statusAPI.unauthenticated;
 
    setStatusAPI(statusAPI);
+   setHistoryAPI(makeHistoryAPI());
 
    function setAuthToken(event: Event | undefined) {
       const form = event?.target as HTMLFormElement | undefined;
@@ -41,6 +44,7 @@
          <CoffeeAvailable />
          <LastBrewed />
          <LastReport />
+         <HistoricalChart />
       {/if}
 
       {#if import.meta.env.DEV}
@@ -70,6 +74,11 @@
       padding: 8px;
    }
    .panel {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       padding: 16px;
+      max-width: 320px;
+      width: 100%;
    }
 </style>
